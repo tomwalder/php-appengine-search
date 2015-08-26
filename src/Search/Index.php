@@ -64,6 +64,8 @@ class Index
     /**
      * Run a basic search query
      *
+     * @todo support Query objects - or another method, query() - TBC
+     *
      * @param $str_phrase
      * @return array
      */
