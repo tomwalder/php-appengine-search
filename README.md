@@ -97,6 +97,9 @@ Some simple, valid query strings:
 - `price:2.99`
 - `romeo`
 
+Within 100 meters of a lan/lng (documents have a Geopoint field called 'place')
+- `distance(place, geopoint(53.4653381,-2.1483717)) < 100`
+
 For *much* more information, see the Python reference docs: https://cloud.google.com/appengine/docs/python/search/query_strings 
 
 ## Sorting ##
@@ -151,11 +154,28 @@ $obj_book = $obj_schema->createDocument([
 ]);
 ```
 
-## Local Development Environment ##
+## Geopoint ##
+
+Create an entry with a Geopoint field
+
+```php
+$obj_pub_schema = (new \Search\Schema())
+    ->addText('name')
+    ->addGeopoint('where')
+    ->addNumber('rating');
+
+$obj_pub = $obj_pub_schema->createDocument([
+    'name' => 'Kim by the Sea',
+    'where' => [53.4653381, -2.2483717],
+    'rating' => 3
+]);
+```
+
+# Local Development Environment #
 
 The Search API is supported locally, because it's included to support the Python, Java and Go App Engine runtimes.
 
-## Google Software ##
+# Google Software #
 
 I've had to include 2 files from Google to make this work - they are the Protocol Buffer implementations for the Search API. You will find them in the `/libs` folder.
 
