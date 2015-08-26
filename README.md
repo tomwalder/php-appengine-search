@@ -4,7 +4,7 @@ This library provides native PHP access to the Google App Engine Search API.
 
 At the time of writing there is no off-the-shelf way to access the Google App Engine full text search API from the PHP runtime.
 
-Generally this means developers cannot access the service without using Python proxy modules - which adds complexity, another language, additional potential points of failure and performance impact.
+Generally this means developers cannot access the service without using [Python/Java/Go proxy modules](https://github.com/tomwalder/phpne14-text-search) - which adds complexity, another language, additional potential points of failure and performance impact.
 
 **PRE-ALPHA** This library is in the very early stages of development. Do not use it in production. It will change.
 
@@ -96,7 +96,7 @@ $obj_book = $obj_schema->createDocument([
 
 ## Local Development Environment ##
 
-The Search API is supported locally, because it's included in the Python (and Java?) App Engine runtimes.
+The Search API is supported locally, because it's included to support the Python, Java and Go App Engine runtimes.
 
 ## Google Software ##
 
