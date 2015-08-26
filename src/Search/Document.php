@@ -72,6 +72,16 @@ class Document
     }
 
     /**
+     * Get the document ID
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->str_id;
+    }
+
+    /**
      * The Schema for the Entity, if known.
      *
      * @return Schema|null
