@@ -60,8 +60,6 @@ class Mapper
     /**
      * Map from a Google document to a Search Document
      *
-     * @todo Handle IDs
-     *
      * @param GoogleDocument $obj_source
      * @return Document
      */
@@ -69,7 +67,7 @@ class Mapper
     {
         $obj_schema = new Schema();
         $obj_doc = new Document($obj_schema);
-        // $obj_doc->setId();
+        $obj_doc->setId($obj_source->getId());
         foreach($obj_source->getFieldList() as $obj_field) {
             /** @var Field $obj_field */
             $str_field_name = $obj_field->getName();
@@ -93,14 +91,13 @@ class Mapper
     /**
      * Map from a Google document to a Search Document
      *
-     * @todo Deal with IDs
-     *
      * @param Document $obj_source
      * @param GoogleDocument $obj_target
      * @return GoogleDocument
      */
     public function toGoogle(Document $obj_source, GoogleDocument $obj_target)
     {
+        $obj_target->setId($obj_source->getId());
         foreach($obj_source->getSchema()->getFields() as $str_name => $int_type) {
             $obj_value = $obj_target->addField()->setName($str_name)->mutableValue();
             if(Schema::FIELD_GEOPOINT === $int_type) {
