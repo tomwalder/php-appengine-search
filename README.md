@@ -78,11 +78,52 @@ You will need `minimum-stability: dev`
 
 # Queries #
 
+You can supply a simple query string to `Index::search`
+
+```php
+$obj_index->search('romeo');
+```
+
+For more control and options, you can supply a `Query` object
+
+```php
+$obj_query = (new \Search\Query($str_query))->fields(['isbn', 'price'])->limit(10)->sort('price');
+$obj_response = $obj_index->search($obj_query);
+```
+
+## Query Strings ##
+
 Some simple, valid query strings:
 - `price:2.99`
 - `romeo`
 
 For *much* more information, see the Python reference docs: https://cloud.google.com/appengine/docs/python/search/query_strings 
+
+## Sorting ##
+
+```php
+$obj_query->sort('price');
+```
+
+```php
+$obj_query->sort('price', Query::ASC);
+```
+
+## Limits & Offsets ##
+
+```php
+$obj_query->limit(10);
+```
+
+```php
+$obj_query->offset(5);
+```
+
+## Return Fields ##
+
+```php
+$obj_query->fields(['isbn', 'price']);
+```
 
 # Creating Documents #
 

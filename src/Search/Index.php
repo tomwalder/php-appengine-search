@@ -64,14 +64,17 @@ class Index
     /**
      * Run a basic search query
      *
-     * @todo support Query objects - or another method, query() - TBC
+     * Support simple query strings OR Query objects
      *
-     * @param $str_phrase
+     * @param $query
      * @return array
      */
-    public function search($str_phrase)
+    public function search($query)
     {
-        return $this->obj_gateway->search($str_phrase);
+        if($query instanceof Query) {
+            return $this->obj_gateway->search($query);
+        }
+        return $this->obj_gateway->search(new Query((string)$query));
     }
 
     /**

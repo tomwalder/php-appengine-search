@@ -24,11 +24,155 @@ namespace Search;
 class Query
 {
 
-    // @todo Limits
-    // @todo Sorting
-    // @todo Returned fields
+    const DESC = 'DESCENDING';
+    const ASC = 'ASCENDING';
+
+    /**
+     * Query string
+     *
+     * @var string
+     */
+    private $str_query = '';
+
+    /**
+     * Max results
+     *
+     * @var int
+     */
+    private $int_limit = 20;
+
+    /**
+     *Result offset
+     *
+     * @var int
+     */
+    private $int_offset = 0;
+
+    /**
+     * A list of the required return fields
+     *
+     * @var null
+     */
+    private $arr_return_fields = null;
+
+    /**
+     * Applied sorts
+     *
+     * @var array
+     */
+    private $arr_sorts = [];
+
+    /**
+     * Set the query string on construction
+     *
+     * @param $str_query
+     */
+    public function __construct($str_query = '')
+    {
+        $this->str_query = $str_query;
+    }
+
+    /**
+     * Get the query string
+     *
+     * @return string
+     */
+    public function getQuery()
+    {
+        return $this->str_query;
+    }
+
+    /**
+     * Set the number of results, between 1-100
+     *
+     * @param $int_limit
+     * @return $this
+     */
+    public function limit($int_limit)
+    {
+        $this->int_limit = min(max(1, $int_limit), 1000);
+        return $this;
+    }
+
+    /**
+     * Get the limit
+     *
+     * @return int
+     */
+    public function getLimit()
+    {
+        return $this->int_limit;
+    }
+
+    /**
+     * Set the result offset, 0-n
+     *
+     * @param $int_offset
+     * @return $this
+     */
+    public function offset($int_offset)
+    {
+        $this->int_offset = min(max(0, $int_offset), 1000);
+        return $this;
+    }
+
+    /**
+     * Get the offset
+     *
+     * @return int
+     */
+    public function getOffset()
+    {
+        return $this->int_offset;
+    }
+
+    /**
+     * Sort results by a field in ASCending order
+     *
+     * @param $str_field
+     * @param string $str_direction
+     * @return $this
+     */
+    public function sort($str_field, $str_direction = self::DESC)
+    {
+        $this->arr_sorts[] = [$str_field, $str_direction];
+        return $this;
+    }
+
+    /**
+     * Get applied sorts
+     *
+     * @return array
+     */
+    public function getSorts()
+    {
+        return $this->arr_sorts;
+    }
+
+    /**
+     * Set the required return fields
+     *
+     * @param array $arr_fields
+     * @return $this
+     */
+    public function fields(array $arr_fields)
+    {
+        $this->arr_return_fields = $arr_fields;
+        return $this;
+    }
+
+    /**
+     * Get the fields to return
+     *
+     * @return null
+     */
+    public function getReturnFields()
+    {
+        return $this->arr_return_fields;
+    }
+
     // @todo Snippets
-    // @todo Offsets, cursors
+    // @todo Cursors
     // @todo Expressions
     // @todo Facets
 

@@ -88,18 +88,45 @@ class Gateway
     /**
      * Run a Search Query
      *
-     * @param $str_query
+     * @param Query $obj_query
      * @return array
      * @throws ApplicationError
      * @throws \Exception
      */
-    public function search($str_query)
+    public function search(Query $obj_query)
     {
         $obj_request = new SearchRequest();
         $obj_params = $obj_request->mutableParams();
         $obj_params->mutableIndexSpec()->setName($this->str_index_name);
         // Other index specs: consistency, mode, name, namespace, source, version
-        $obj_request->getParams()->setQuery($str_query)->setLimit(20); // default limit of 20 anyway
+
+        // Basics
+        $obj_request->getParams()
+            ->setQuery($obj_query->getQuery())
+            ->setLimit($obj_query->getLimit())
+            ->setOffset($obj_query->getOffset())
+        ;
+
+        // Sorting
+        $arr_sorts = $obj_query->getSorts();
+        if(null !== $arr_sorts && count($arr_sorts) > 0) {
+            foreach ($arr_sorts as $arr_sort) {
+                $obj_sort = $obj_params->addSortSpec();
+                $obj_sort->setSortExpression($arr_sort[0]);
+                $obj_sort->setSortDescending(Query::DESC === $arr_sort[1]);
+            }
+        }
+
+        // Return Fields
+        $arr_return_fields = $obj_query->getReturnFields();
+        if(null !== $arr_return_fields && count($arr_return_fields) > 0) {
+            $obj_fields = $obj_params->mutableFieldSpec();
+            foreach ($arr_return_fields as $str_field) {
+                $obj_fields->addName($str_field);
+            }
+        }
+
+
         $this->execute('Search', $obj_request, new SearchResponse());
         return $this->processSearchResponse();
     }
