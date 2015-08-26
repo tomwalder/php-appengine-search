@@ -1,0 +1,30 @@
+{
+    "name": "tomwalder/gae-search",
+    "type": "library",
+    "description": "Google App Engine Search Library for PHP",
+    "keywords": ["google", "appengine", "gae", "search", "full text"],
+    "homepage": "https://github.com/tomwalder/gae-search",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Tom Walder",
+            "email": "tom@docnet.nu"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0",
+        "satooshi/php-coveralls": "dev-master",
+        "faker/faker": "dev-master"
+    },
+    "autoload": {
+        "classmap": [
+            "src/",
+            "libs/"
+        ],
+        "psr-4": {"Search\\": "src/Search/"}
+    },
+    "include-path": ["src/"]
+}
