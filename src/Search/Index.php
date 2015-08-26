@@ -67,7 +67,7 @@ class Index
      * Support simple query strings OR Query objects
      *
      * @param $query
-     * @return array
+     * @return object
      */
     public function search($query)
     {
@@ -86,6 +86,34 @@ class Index
     public function get($str_id)
     {
         return $this->obj_gateway->getDocById($str_id);
+    }
+
+    /**
+     * Delete one or more documents
+     *
+     * @param $docs
+     */
+    public function delete($docs)
+    {
+        if($docs instanceof Document) {
+            $this->obj_gateway->delete([$docs->getId()]);
+        } elseif (is_string($docs)) {
+            $this->obj_gateway->delete([$docs]);
+        } elseif (is_array($docs)) {
+            $arr_doc_ids = [];
+            foreach($docs as $doc){
+                if($doc instanceof Document) {
+                    $arr_doc_ids[] = $doc->getId();
+                } elseif (is_string($doc)) {
+                    $arr_doc_ids[] = $doc;
+                } else {
+                    throw new \InvalidArgumentException('Parameter must be one or more \Search\Document objects or ID strings');
+                }
+            }
+            $this->obj_gateway->delete($arr_doc_ids);
+        } else {
+            throw new \InvalidArgumentException('Parameter must be one or more \Search\Document objects or ID strings');
+        }
     }
 
     /**

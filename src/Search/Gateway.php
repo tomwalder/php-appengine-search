@@ -16,6 +16,8 @@
  */
 namespace Search;
 
+use google\appengine\DeleteDocumentRequest;
+use google\appengine\DeleteDocumentResponse;
 use google\appengine\IndexDocumentRequest;
 use google\appengine\IndexDocumentResponse;
 use google\appengine\runtime\ApiProxy;
@@ -89,7 +91,7 @@ class Gateway
      * Run a Search Query
      *
      * @param Query $obj_query
-     * @return array
+     * @return object
      * @throws ApplicationError
      * @throws \Exception
      */
@@ -141,7 +143,23 @@ class Gateway
      */
     public function getDocById($str_id)
     {
-        // @todo
+    }
+
+    /**
+     * Delete one or more documents by ID
+     *
+     * @param array $arr_ids
+     */
+    public function delete(array $arr_ids)
+    {
+        $obj_request = new DeleteDocumentRequest();
+        $obj_params = $obj_request->mutableParams();
+        $obj_params->mutableIndexSpec()->setName($this->str_index_name);
+        // Other index specs: consistency, mode, name, namespace, source, version
+        foreach($arr_ids as $str_id) {
+            $obj_params->addDocId($str_id);
+        }
+        $this->execute('DeleteDocument', $obj_request, new DeleteDocumentResponse());
     }
 
     /**
@@ -169,7 +187,7 @@ class Gateway
     /**
      * Process a search response
      *
-     * @return array
+     * @return object
      */
     private function processSearchResponse()
     {
