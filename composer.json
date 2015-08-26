@@ -1,5 +1,5 @@
 {
-    "name": "tomwalder/appengine-search",
+    "name": "tomwalder/php-appengine-search",
     "type": "library",
     "description": "Google App Engine Search Library for PHP",
     "keywords": ["google", "appengine", "gae", "search", "full text"],
