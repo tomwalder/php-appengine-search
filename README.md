@@ -13,7 +13,8 @@ Generally this means developers cannot access the service without using [Python/
 - [Examples](#examples)
 - [Install with Composer](#install-with-composer)
 - [Queries](#queries)
-- [Batch Inserts](#batch-inserts)
+- [Creating Documents](#creating-documents)
+- [Deleting Documents](#deleting-documents)
 - [Local Development](#local-development-environment)
 - [Google Software](#google-software)
 
