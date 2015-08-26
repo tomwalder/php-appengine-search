@@ -11,7 +11,9 @@ Generally this means developers cannot access the service without using [Python/
 ## Table of Contents ##
 
 - [Examples](#examples)
+- [Install with Composer](#install-with-composer)
 - [Queries](#queries)
+- [Batch Inserts](#batch-inserts)
 - [Local Development](#local-development-environment)
 - [Google Software](#google-software)
 
