@@ -60,6 +60,20 @@ foreach($obj_response->results as $obj_result) {
 }
 ```
 
+## Getting Started ##
+
+### Install with Composer ###
+
+To install using Composer, use this require line in your `composer.json` for bleeding-edge features, dev-master
+
+`"tomwalder/php-appengine-search": "dev-master"`
+
+Or, if you're using the command line:
+
+`composer require tomwalder/php-appengine-search`
+
+You will need `minimum-stability: dev`
+
 # Queries #
 
 Some simple, valid query strings:
