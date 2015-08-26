@@ -28,14 +28,14 @@ try {
     // First pub
     $obj_pub1 = $obj_pub_schema->createDocument([
         'name' => 'Euston Tap',
-        'where' => [51.5269059, -0.1325679],
+        'location' => [51.5269059, -0.1325679],
         'rating' => 5
     ]);
 
     // Second pub
     $obj_pub2 = $obj_pub_schema->createDocument([
         'name' => 'Kim by the Sea',
-        'where' => [53.4653381, -2.2483717],
+        'location' => [53.4653381, -2.2483717],
         'rating' => 3
     ]);
 
