@@ -171,6 +171,18 @@ $obj_pub = $obj_pub_schema->createDocument([
 ]);
 ```
 
+# Deleting Documents #
+
+You can delete documents by calling the `Index::delete()` method.
+
+It support one or more `Document` objects - or one or more Document ID strings - or a mixture of objects and ID strings!
+
+```php
+$obj_index = new \Search\Index('library');
+$obj_index->delete('some-document-id');
+$obj_index->delete([$obj_doc1, $obj_doc2]);
+```
+
 # Local Development Environment #
 
 The Search API is supported locally, because it's included to support the Python, Java and Go App Engine runtimes.
