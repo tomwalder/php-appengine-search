@@ -31,26 +31,26 @@ $obj_schema = (new \Search\Schema())
     ->addNumber('price');
         
 // Create and populate a document
-$obj_book = $obj_schema->createDocument();
-$obj_book->title = 'Romeo and Juliet';
-$obj_book->author = 'William Shakespeare';
-$obj_book->isbn = '1840224339';
-$obj_book->price = 9.99;
-    
-// Write it to the Index
-$obj_index = new \Search\Index('library');
-$obj_index->put($obj_book);
-```
-
-You can also use the [Alternative Array Syntax](#alternative-array-syntax) for creating Documents from Schemas, like this
-
-```php
 $obj_book = $obj_schema->createDocument([
     'title' => 'The Merchant of Venice',
     'author' => 'William Shakespeare',
     'isbn' => '1840224312',
     'price' => 11.99
 ]);
+    
+// Write it to the Index
+$obj_index = new \Search\Index('library');
+$obj_index->put($obj_book);
+```
+
+In this example, I've used the [Alternative Array Syntax](#alternative-array-syntax) for creating Documents - but you can also do it like this:
+
+```php
+$obj_book = $obj_schema->createDocument();
+$obj_book->title = 'Romeo and Juliet';
+$obj_book->author = 'William Shakespeare';
+$obj_book->isbn = '1840224339';
+$obj_book->price = 9.99;
 ```
 
 Now let's do a simple search and display the output
@@ -132,6 +132,14 @@ $obj_query->offset(5);
 $obj_query->fields(['isbn', 'price']);
 ```
 
+## Get Document by ID ##
+
+You can fetch a single document from an index directly, by it's unique Doc ID:
+
+```php
+$obj_index->get('some-document-id-here');
+```
+
 # Creating Documents #
 
 ## Batch Inserts ##
@@ -185,6 +193,7 @@ It support one or more `Document` objects - or one or more Document ID strings -
 $obj_index = new \Search\Index('library');
 $obj_index->delete('some-document-id');
 $obj_index->delete([$obj_doc1, $obj_doc2]);
+$obj_index->delete([$obj_doc3, 'another-document-id']);
 ```
 
 # Local Development Environment #
