@@ -38,7 +38,7 @@ class Schema
     const FIELD_TEXT = 2;
     const FIELD_HTML = 3;
     const FIELD_NUMBER = 4;
-    const FIELD_DATETIME = 5;
+    const FIELD_DATE = 5;
     const FIELD_GEOPOINT = 20;
     const FIELD_DETECT = 99; // used for auto-detection
 
@@ -115,16 +115,16 @@ class Schema
     }
 
     /**
-     * Add a DATETIME field to the schema
+     * Add a DATE field to the schema
      *
-     * Date Field - a date object with year/month/day and optional time
+     * Date Field - a date object with year/month/day
      *
      * @param $str_name
      * @return Schema
      */
-    public function addDatetime($str_name)
+    public function addDate($str_name)
     {
-        return $this->addField($str_name, self::FIELD_DATETIME);
+        return $this->addField($str_name, self::FIELD_DATE);
     }
 
     /**
@@ -196,7 +196,7 @@ class Schema
 
             case 'object':
                 if($mix_value instanceof \DateTime) {
-                    $this->addDatetime($str_name);
+                    $this->addDate($str_name);
                 } elseif (method_exists($mix_value, '__toString')) {
                     $this->addText($str_name);
                 } else {

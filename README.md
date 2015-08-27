@@ -13,7 +13,7 @@ Generally this means developers cannot access the service without using [Python/
 - [Examples](#examples)
 - [Install with Composer](#install-with-composer)
 - [Queries](#queries)
-- [Creating Documents](#creating-documents)
+- [Creating Documents](#creating-documents) including location (Geopoint) and Dates
 - [Deleting Documents](#deleting-documents)
 - [Local Development](#local-development-environment)
 - [Google Software](#google-software)
@@ -142,6 +142,49 @@ $obj_index->get('some-document-id-here');
 
 # Creating Documents #
 
+## Schemas & Field Types ##
+
+As per the Python docs, the available field types are
+
+- **Atom** - an indivisible character string
+- **Text** - a plain text string that can be searched word by word
+- **HTML** - a string that contains HTML markup tags, only the text outside the markup tags can be searched
+- **Number** - a floating point number
+- **Date** - a date with year/month/day and optional time
+- **Geopoint** - latitude and longitude coordinates
+
+### Dates ###
+
+We support `DateTime` objects or date strings in the format `YYYY-MM-DD` (PHP `date('Y-m-d')`)
+
+```php
+$obj_person_schema = (new \Search\Schema())
+    ->addText('name')
+    ->addDate('dob');
+
+$obj_person = $obj_person_schema->createDocument([
+    'name' => 'Marty McFly',
+    'dob' => new DateTime()
+]);
+```
+
+### Geopoints - Location Data ###
+
+Create an entry with a Geopoint field
+
+```php
+$obj_pub_schema = (new \Search\Schema())
+    ->addText('name')
+    ->addGeopoint('where')
+    ->addNumber('rating');
+
+$obj_pub = $obj_pub_schema->createDocument([
+    'name' => 'Kim by the Sea',
+    'where' => [53.4653381, -2.2483717],
+    'rating' => 3
+]);
+```
+
 ## Batch Inserts ##
 
 It's more efficient to insert in batches if you have multiple documents. Up to 200 documents can be inserted at once.
@@ -163,23 +206,6 @@ $obj_book = $obj_schema->createDocument([
     'author' => 'William Shakespeare',
     'isbn' => '1840224312',
     'price' => 11.99
-]);
-```
-
-## Geopoint ##
-
-Create an entry with a Geopoint field
-
-```php
-$obj_pub_schema = (new \Search\Schema())
-    ->addText('name')
-    ->addGeopoint('where')
-    ->addNumber('rating');
-
-$obj_pub = $obj_pub_schema->createDocument([
-    'name' => 'Kim by the Sea',
-    'where' => [53.4653381, -2.2483717],
-    'rating' => 3
 ]);
 ```
 

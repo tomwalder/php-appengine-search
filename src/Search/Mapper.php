@@ -38,7 +38,7 @@ class Mapper
         Schema::FIELD_TEXT => ContentType::TEXT,
         Schema::FIELD_HTML => ContentType::HTML,
         Schema::FIELD_NUMBER => ContentType::NUMBER,
-        Schema::FIELD_DATETIME => ContentType::DATE,
+        Schema::FIELD_DATE => ContentType::DATE,
         Schema::FIELD_GEOPOINT => ContentType::GEO
     ];
 
@@ -116,7 +116,12 @@ class Mapper
                 }
                 // @todo deal with specific field types requiring null / blanks / values
                 if(isset($obj_source->{$str_name})) {
-                    $obj_value->setStringValue((string)$obj_source->{$str_name});
+                    $mix_val = $obj_source->{$str_name};
+                    if($mix_val instanceof \DateTime) {
+                        $obj_value->setStringValue($mix_val->format('Y-m-d'));
+                    } else {
+                        $obj_value->setStringValue((string)$mix_val);
+                    }
                 } else {
                     $obj_value->setStringValue(null);
                 }
