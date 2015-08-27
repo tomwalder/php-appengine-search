@@ -100,9 +100,12 @@ $obj_response = $obj_index->search($obj_query);
 Some simple, valid query strings:
 - `price:2.99`
 - `romeo`
+- `dob:2015-01-01`
+- `dob < 2000-01-01`
+- `tom AND age:36`
 
-Within 100 meters of a lan/lng (documents have a Geopoint field called 'place')
-- `distance(place, geopoint(53.4653381,-2.1483717)) < 100`
+Within 100 meters of a lat/lng *(assuming some documents have a Geopoint field called 'place')*
+- `distance(place, geopoint(53.4653381, -2.1483717)) < 100`
 
 For *much* more information, see the Python reference docs: https://cloud.google.com/appengine/docs/python/search/query_strings 
 
