@@ -130,6 +130,14 @@ class Gateway
             }
         }
 
+        // Return Expressions
+        $arr_return_exps = $obj_query->getReturnExpressions();
+        if(null !== $arr_return_exps && count($arr_return_exps) > 0) {
+            $obj_fields = $obj_params->mutableFieldSpec();
+            foreach ($arr_return_exps as $arr_exp) {
+                $obj_fields->addExpression()->setName($arr_exp[0])->setExpression($arr_exp[1]);
+            }
+        }
 
         $this->execute('Search', $obj_request, new SearchResponse());
         return $this->processSearchResponse();
@@ -217,6 +225,8 @@ class Gateway
                 'score' => null, // $obj_result->getScore()
                 'doc' => $obj_doc
             ];
+
+            // @todo Extract expressions from results
         }
         return $obj_response;
     }
