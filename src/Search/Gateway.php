@@ -220,13 +220,11 @@ class Gateway
         $obj_mapper = new Mapper();
         foreach($obj_search_response->getResultList() as $obj_result) {
             /** @var SearchResult $obj_result */
-            $obj_doc = $obj_mapper->fromGoogle($obj_result->getDocument());
+            $obj_doc = $obj_mapper->fromGoogle($obj_result->getDocument(), $obj_result->getExpressionList());
             $obj_response->results[] = (object)[
                 'score' => null, // $obj_result->getScore()
                 'doc' => $obj_doc
             ];
-
-            // @todo Extract expressions from results
         }
         return $obj_response;
     }

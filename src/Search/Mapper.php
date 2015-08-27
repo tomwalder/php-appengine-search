@@ -61,9 +61,10 @@ class Mapper
      * Map from a Google document to a Search Document
      *
      * @param GoogleDocument $obj_source
+     * @param Field[] $arr_expressions
      * @return Document
      */
-    public function fromGoogle(GoogleDocument $obj_source)
+    public function fromGoogle(GoogleDocument $obj_source, array $arr_expressions = null)
     {
         $obj_schema = new Schema();
         $obj_doc = new Document($obj_schema);
@@ -85,7 +86,34 @@ class Mapper
                 }
             }
         }
+        if(null !== $arr_expressions) {
+            $this->mapExpressions($arr_expressions, $obj_doc);
+        }
         return $obj_doc;
+    }
+
+    /**
+     * Map expressions into a document
+     *
+     * @param Field[] $arr_fields
+     * @param Document $obj_doc
+     */
+    private function mapExpressions(array $arr_fields, Document $obj_doc)
+    {
+        foreach($arr_fields as $obj_field) {
+            $str_field_name = $obj_field->getName();
+            $obj_value = $obj_field->getValue();
+            if(ContentType::GEO === $obj_value->getType()) {
+                $obj_geo = $obj_value->getGeo();
+                $obj_doc->setExpression($str_field_name, [$obj_geo->getLat(), $obj_geo->getLng()]);
+            } else {
+                if(isset(self::$arr_types_rev[$obj_value->getType()])) {
+                    $obj_doc->setExpression($str_field_name, $obj_value->getStringValue());
+                } else {
+                    throw new \InvalidArgumentException('Unknown type mapping from Expressions');
+                }
+            }
+        }
     }
 
     /**

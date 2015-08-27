@@ -46,6 +46,13 @@ class Document
     private $arr_data = [];
 
     /**
+     * Expression data
+     *
+     * @var array
+     */
+    private $arr_expressions = [];
+
+    /**
      * Optionally set the Schema on construction
      *
      * @param Schema $obj_schema
@@ -130,6 +137,51 @@ class Document
     public function __isset($str_key)
     {
         return isset($this->arr_data[$str_key]);
+    }
+
+    /**
+     * Get all the document data
+     *
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->arr_data;
+    }
+
+    /**
+     * Set an expression
+     *
+     * @param $str_name
+     * @param $mix_value
+     */
+    public function setExpression($str_name, $mix_value)
+    {
+        $this->arr_expressions[$str_name] = $mix_value;
+    }
+
+    /**
+     * Get all the returned expressions for this document
+     *
+     * @return array
+     */
+    public function getExpressions()
+    {
+        return $this->arr_expressions;
+    }
+
+    /**
+     * Get a specific returned expression
+     *
+     * @param $str_name
+     * @return null
+     */
+    public function getExpression($str_name)
+    {
+        if(isset($this->arr_expressions[$str_name])) {
+            return $this->arr_expressions[$str_name];
+        }
+        return null;
     }
 
 }
