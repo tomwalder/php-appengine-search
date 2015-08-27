@@ -13,7 +13,8 @@ Generally this means developers cannot access the service without using [Python/
 - [Examples](#examples)
 - [Install with Composer](#install-with-composer)
 - [Queries](#queries)
-- [Creating Documents](#creating-documents) including location (Geopoint) and Dates
+- [Distance From Geo Queries](#distance-from)
+- [Creating Documents](#creating-documents) - includes location (Geopoint) and Dates
 - [Deleting Documents](#deleting-documents)
 - [Local Development](#local-development-environment)
 - [Google Software](#google-software)
@@ -135,12 +136,44 @@ $obj_query->offset(5);
 $obj_query->fields(['isbn', 'price']);
 ```
 
+## Expressions ##
+
+The library supports requesting arbitrary expressions in the results.
+
+```php
+$obj_query->expression('euros', 'gbp * 1.45']);
+```
+
+These can be accessed from the `Document::getExpression()` method on the resulting documents, like this:
+
+```php
+$obj_doc->getExpression('euros');
+```
+
 ## Get Document by ID ##
 
 You can fetch a single document from an index directly, by it's unique Doc ID:
 
 ```php
 $obj_index->get('some-document-id-here');
+```
+
+# Helper Queries #
+
+## Distance From ##
+
+A common use case is searching for documents that have a Geopoint field, based on their distance from a known Geopoint. e.g. "Find pubs near me"
+
+There is a helper method to do this for you, and it also returns the distance in meters in the response.
+
+```php
+$obj_query->sortByDistance('location', [53.4653381,-2.2483717]);
+```
+
+This will return results, nearest first to the supplied Lat/Lon, and there will be an expression returned for the distance itself - prefixed with `distance_from_`:
+
+```php
+$obj_result->doc->getExpression('distance_from_location');
 ```
 
 # Creating Documents #
