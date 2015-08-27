@@ -1,3 +1,6 @@
+[![Build Status](https://api.travis-ci.org/tomwalder/php-appengine-search.svg)](https://travis-ci.org/tomwalder/php-appengine-search)
+[![Coverage Status](https://coveralls.io/repos/tomwalder/php-appengine-search/badge.svg)](https://coveralls.io/r/tomwalder/php-appengine-search)
+
 # Full Text Search for PHP on Google App Engine #
 
 This library provides native PHP access to the Google App Engine Search API.

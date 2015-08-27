@@ -4,13 +4,12 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "de22f97683e786859bd215c8428060a8",
+    "hash": "c67b449991e9e37495edc0cb8f05e961",
     "packages": [],
     "packages-dev": null,
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "google/appengine-php-sdk": 20,
         "satooshi/php-coveralls": 20
     },
     "prefer-stable": false,
