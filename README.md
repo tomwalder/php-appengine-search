@@ -88,7 +88,10 @@ $obj_index->search('romeo');
 For more control and options, you can supply a `Query` object
 
 ```php
-$obj_query = (new \Search\Query($str_query))->fields(['isbn', 'price'])->limit(10)->sort('price');
+$obj_query = (new \Search\Query($str_query))
+   ->fields(['isbn', 'price'])
+   ->limit(10)
+   ->sort('price');
 $obj_response = $obj_index->search($obj_query);
 ```
 
