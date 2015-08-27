@@ -20,6 +20,8 @@ use google\appengine\DeleteDocumentRequest;
 use google\appengine\DeleteDocumentResponse;
 use google\appengine\IndexDocumentRequest;
 use google\appengine\IndexDocumentResponse;
+use google\appengine\ListDocumentsRequest;
+use google\appengine\ListDocumentsResponse;
 use google\appengine\runtime\ApiProxy;
 use google\appengine\runtime\ApplicationError;
 use google\appengine\SearchRequest;
@@ -103,7 +105,7 @@ class Gateway
         // Other index specs: consistency, mode, name, namespace, source, version
 
         // Basics
-        $obj_request->getParams()
+        $obj_params
             ->setQuery($obj_query->getQuery())
             ->setLimit($obj_query->getLimit())
             ->setOffset($obj_query->getOffset())
@@ -134,7 +136,7 @@ class Gateway
     }
 
     /**
-     * @todo Return a single document by ID
+     * Return a single document by ID
      *
      * @param $str_id
      * @return array
@@ -143,6 +145,12 @@ class Gateway
      */
     public function getDocById($str_id)
     {
+        $obj_request = new ListDocumentsRequest();
+        $obj_params = $obj_request->mutableParams();
+        $obj_params->mutableIndexSpec()->setName($this->str_index_name);
+        $obj_params->setStartDocId($str_id)->setLimit(1);
+        $this->execute('ListDocuments', $obj_request, new ListDocumentsResponse());
+        return $this->processListResponse();
     }
 
     /**
@@ -187,6 +195,8 @@ class Gateway
     /**
      * Process a search response
      *
+     * @todo populate score when using a scorer
+     *
      * @return object
      */
     private function processSearchResponse()
@@ -204,10 +214,31 @@ class Gateway
             /** @var SearchResult $obj_result */
             $obj_doc = $obj_mapper->fromGoogle($obj_result->getDocument());
             $obj_response->results[] = (object)[
-                '_id' => $obj_result->getDocument()->getId(),
                 'score' => null, // $obj_result->getScore()
                 'doc' => $obj_doc
             ];
+        }
+        return $obj_response;
+    }
+
+    /**
+     * Process a document list response
+     *
+     * @return object
+     */
+    private function processListResponse()
+    {
+        /** @var ListDocumentsResponse $obj_list_response */
+        $obj_list_response = $this->obj_last_response;
+        $obj_response = (object)[
+            'status' => $this->describeStatusCode($obj_list_response->getStatus()->getCode()),
+            'count' => $obj_list_response->getDocumentSize(),
+            'docs' => []
+        ];
+        $obj_mapper = new Mapper();
+        foreach($obj_list_response->getDocumentList() as $obj_document) {
+            $obj_doc = $obj_mapper->fromGoogle($obj_document);
+            $obj_response->docs[] = $obj_doc;
         }
         return $obj_response;
     }
@@ -236,6 +267,8 @@ class Gateway
     }
 
     /**
+     * Get the last response message
+     *
      * @return ProtocolMessage
      */
     public function getLastResponse()
@@ -244,6 +277,8 @@ class Gateway
     }
 
     /**
+     * Get the last request message
+     *
      * @return ProtocolMessage
      */
     public function getLastRequest()
