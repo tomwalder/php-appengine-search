@@ -105,9 +105,6 @@ Some simple, valid query strings:
 - `dob < 2000-01-01`
 - `tom AND age:36`
 
-Within 100 meters of a lat/lng *(assuming some documents have a Geopoint field called 'place')*
-- `distance(place, geopoint(53.4653381, -2.1483717)) < 100`
-
 For *much* more information, see the Python reference docs: https://cloud.google.com/appengine/docs/python/search/query_strings 
 
 ## Sorting ##
