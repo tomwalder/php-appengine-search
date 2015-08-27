@@ -56,6 +56,13 @@ class Query
     private $arr_return_fields = null;
 
     /**
+     * A list of the required return expressions
+     *
+     * @var null
+     */
+    private $arr_return_expressions = [];
+
+    /**
      * Applied sorts
      *
      * @var array
@@ -140,6 +147,24 @@ class Query
     }
 
     /**
+     * Sort results by distance from a supplied Lat/Lon. Defaults to nearest first.
+     *
+     * Also includes the distance (in meters) in the results as an expression
+     *
+     * @param string $str_field
+     * @param array $arr_loc
+     * @param string $str_dir
+     * @return $this
+     */
+    public function sortByDistance($str_field, array $arr_loc, $str_dir = self::ASC)
+    {
+        $str_distance_expression = "distance({$str_field}, geopoint({$arr_loc[0]},{$arr_loc[1]}))";
+        $this->sort($str_distance_expression, $str_dir);
+        $this->expression('distance_from_' . $str_field, $str_distance_expression);
+        return $this;
+    }
+
+    /**
      * Get applied sorts
      *
      * @return array
@@ -171,9 +196,31 @@ class Query
         return $this->arr_return_fields;
     }
 
+    /**
+     * Add an expression to return
+     *
+     * @param string $str_name
+     * @param string $str_expression
+     * @return $this
+     */
+    public function expression($str_name, $str_expression)
+    {
+        $this->arr_return_expressions[] = [$str_name, $str_expression];
+        return $this;
+    }
+
+    /**
+     * Get the expressions to return
+     *
+     * @return null
+     */
+    public function getReturnExpressions()
+    {
+        return $this->arr_return_expressions;
+    }
+
     // @todo Snippets
     // @todo Cursors
-    // @todo Expressions
     // @todo Facets
 
 }
