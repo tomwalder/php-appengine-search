@@ -185,6 +185,7 @@ class Schema
      *
      * @param $str_name
      * @param $mix_value
+     * @return $this
      */
     public function addAutoField($str_name, $mix_value)
     {
@@ -213,6 +214,7 @@ class Schema
             default:
                 $this->addText($str_name);
         }
+        return $this;
     }
 
 }
