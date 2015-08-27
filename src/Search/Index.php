@@ -126,13 +126,6 @@ class Index
         return [$this->obj_gateway->getLastRequest(), $this->obj_gateway->getLastResponse()];
     }
 
-    // @todo DeleteDocumentRequest
-    // @todo ListIndexesRequest
-    // @todo DeleteIndexRequest
-    // @todo RequestStatus
-    // @todo ListDocumentsRequest
-    // @todo CancelDeleteIndexRequest
-    // @todo DeleteSchemaRequest
     // @todo FacetRequestParam
     // @todo FacetRequest
 
