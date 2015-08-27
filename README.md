@@ -13,7 +13,7 @@ Generally this means developers cannot access the service without using [Python/
 - [Examples](#examples)
 - [Install with Composer](#install-with-composer)
 - [Queries](#queries)
-- [Distance From Geo Queries](#distance-from)
+- [Distance Geo Queries](#distance-from)
 - [Creating Documents](#creating-documents) - includes location (Geopoint) and Dates
 - [Deleting Documents](#deleting-documents)
 - [Local Development](#local-development-environment)
