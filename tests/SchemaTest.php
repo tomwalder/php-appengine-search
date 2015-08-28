@@ -55,12 +55,14 @@ class SchemaTest extends \PHPUnit_Framework_TestCase {
             ->addAutoField('number1', 99)
             ->addAutoField('number2', 1.21)
             ->addAutoField('date', new DateTime())
+            ->addAutoField('stringable', new Stringy())
         ;
         $this->assertEquals($obj_schema->getFields(), [
             'string' => \Search\Schema::FIELD_TEXT,
             'number1' => \Search\Schema::FIELD_NUMBER,
             'number2' => \Search\Schema::FIELD_NUMBER,
-            'date' => \Search\Schema::FIELD_DATE
+            'date' => \Search\Schema::FIELD_DATE,
+            'stringable' => \Search\Schema::FIELD_TEXT
         ]);
     }
 
