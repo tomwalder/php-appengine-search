@@ -273,3 +273,7 @@ These 2 files are Copyright 2007 Google Inc.
 As and when they make it into the actual live PHP runtime, I will remove them from here.
 
 Thank you to @sjlangley for the assist.
+
+# Other App Engine Software #
+
+If you've enjoyed this, you might be interested in my [Google Cloud Datastore Library for PHP, PHP-GDS](https://github.com/tomwalder/php-gds)
