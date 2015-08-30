@@ -43,9 +43,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(121, $obj_query->getLimit());
         $obj_query->limit(-10);
         $this->assertEquals(1, $obj_query->getLimit());
-        $obj_query->limit(2001);
-        $this->assertEquals(1000, $obj_query->getLimit());
         $obj_query2 = $obj_query->limit(2001);
+        $this->assertEquals(1000, $obj_query->getLimit());
         $this->assertSame($obj_query, $obj_query2);
     }
 
@@ -60,9 +59,64 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(121, $obj_query->getOffset());
         $obj_query->offset(-10);
         $this->assertEquals(0, $obj_query->getOffset());
-        $obj_query->offset(2001);
-        $this->assertEquals(1000, $obj_query->getOffset());
         $obj_query2 = $obj_query->offset(2001);
+        $this->assertEquals(1000, $obj_query->getOffset());
+        $this->assertSame($obj_query, $obj_query2);
+    }
+
+    /**
+     * Test sort setter & getter
+     */
+    public function testSort()
+    {
+        $obj_query = new \Search\Query();
+        $this->assertEmpty($obj_query->getSorts());
+        $obj_query->sort('a', 'b');
+        $this->assertEquals([['a', 'b']], $obj_query->getSorts());
+        $obj_query2 = $obj_query->sort('c', 'd');
+        $this->assertEquals([['a', 'b'],['c', 'd']], $obj_query->getSorts());
+        $this->assertSame($obj_query, $obj_query2);
+    }
+
+    /**
+     * Test return field config
+     */
+    public function testFields()
+    {
+        $obj_query = new \Search\Query();
+        $this->assertEmpty($obj_query->getReturnFields());
+        $obj_query->fields(['a', 'b']);
+        $this->assertEquals(['a', 'b'], $obj_query->getReturnFields());
+        $obj_query2 = $obj_query->fields(['c', 'd']);
+        $this->assertEquals(['c', 'd'], $obj_query->getReturnFields());
+        $this->assertSame($obj_query, $obj_query2);
+    }
+
+    /**
+     * Test expressions
+     */
+    public function testExpression()
+    {
+        $obj_query = new \Search\Query();
+        $this->assertEmpty($obj_query->getReturnExpressions());
+        $obj_query->expression('a', 'b');
+        $this->assertEquals([['a', 'b']], $obj_query->getReturnExpressions());
+        $obj_query2 = $obj_query->expression('c', 'd');
+        $this->assertEquals([['a', 'b'],['c', 'd']], $obj_query->getReturnExpressions());
+        $this->assertSame($obj_query, $obj_query2);
+    }
+
+    /**
+     * Test the distance helper
+     */
+    public function testDistance()
+    {
+        $obj_query = new \Search\Query();
+        $this->assertEmpty($obj_query->getSorts());
+        $this->assertEmpty($obj_query->getReturnExpressions());
+        $obj_query2 = $obj_query->sortByDistance('where', [1.21, 3.14159]);
+        $this->assertEquals([['distance(where, geopoint(1.21,3.14159))', \Search\Query::ASC]], $obj_query->getSorts());
+        $this->assertEquals([['distance_from_where', 'distance(where, geopoint(1.21,3.14159))']], $obj_query->getReturnExpressions());
         $this->assertSame($obj_query, $obj_query2);
     }
 
