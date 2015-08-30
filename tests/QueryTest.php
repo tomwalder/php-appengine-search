@@ -49,4 +49,21 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($obj_query, $obj_query2);
     }
 
+    /**
+     * Test getting and setting the offset
+     */
+    public function testOffset()
+    {
+        $obj_query = new \Search\Query();
+        $this->assertEquals(0, $obj_query->getOffset());
+        $obj_query->offset(121);
+        $this->assertEquals(121, $obj_query->getOffset());
+        $obj_query->offset(-10);
+        $this->assertEquals(0, $obj_query->getOffset());
+        $obj_query->offset(2001);
+        $this->assertEquals(1000, $obj_query->getOffset());
+        $obj_query2 = $obj_query->offset(2001);
+        $this->assertSame($obj_query, $obj_query2);
+    }
+
 }
