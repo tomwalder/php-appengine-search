@@ -25,13 +25,6 @@ class Index
 {
 
     /**
-     * Index name
-     *
-     * @var string
-     */
-    private $str_index_name = null;
-
-    /**
      * @var Gateway
      */
     private $obj_gateway = null;
@@ -41,7 +34,6 @@ class Index
      */
     public function __construct($str_index_name)
     {
-        $this->str_index_name = $str_index_name;
         $this->obj_gateway = new Gateway($str_index_name);
     }
 
