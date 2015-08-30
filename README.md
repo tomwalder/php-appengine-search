@@ -9,7 +9,7 @@ At the time of writing there is no off-the-shelf way to access the Google App En
 
 Generally this means developers cannot access the service without using [Python/Java/Go proxy modules](https://github.com/tomwalder/phpne14-text-search) - which adds complexity, another language, additional potential points of failure and performance impact.
 
-**PRE-ALPHA** This library is in the very early stages of development. Do not use it in production. It will change.
+**ALPHA** This library is in the very early stages of development. Do not use it in production. It will change.
 
 ## Table of Contents ##
 
