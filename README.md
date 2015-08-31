@@ -67,6 +67,14 @@ foreach($obj_response->results as $obj_result) {
 }
 ```
 
+### Demo Application ###
+
+Search pubs!
+
+Application: http://pub-search.appspot.com/
+
+Code: https://github.com/tomwalder/pub-search
+
 ## Getting Started ##
 
 ### Install with Composer ###
