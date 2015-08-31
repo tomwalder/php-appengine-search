@@ -17,6 +17,7 @@ Generally this means developers cannot access the service without using [Python/
 - [Install with Composer](#install-with-composer)
 - [Queries](#queries)
 - [Distance Geo Queries](#distance-from)
+- [Autocomplete](#autocomplete)
 - [Creating Documents](#creating-documents) - includes location (Geopoint) and Dates
 - [Deleting Documents](#deleting-documents)
 - [Local Development](#local-development-environment)
@@ -166,7 +167,7 @@ You can fetch a single document from an index directly, by it's unique Doc ID:
 $obj_index->get('some-document-id-here');
 ```
 
-# Helper Queries #
+# Helper Queries & Tools #
 
 ## Distance From ##
 
@@ -183,6 +184,32 @@ This will return results, nearest first to the supplied Lat/Lon, and there will 
 ```php
 $obj_result->doc->getExpression('distance_from_location');
 ```
+
+## Autocomplete ##
+
+Autocomplete is one of the most desired and useful features of a search solution.
+
+This can be implemented fairly easily with the Google App Engine Search API, **with a little slight of hand!** 
+
+The Search API does not natively support "edge n-gram" tokenisation (which is what we need for autocomplete!).
+
+So, you can do this with the library - when creating documents, set a second text field with the output from the included `Tokenizer::edgeNGram` function
+
+```php
+$obj_tkzr = new \Search\Tokenizer();
+$obj_schema->createDocument([
+    'name' => $str_name,
+    'name_ngram' => $obj_tkzr->edgeNGram($str_name),
+]);
+```
+
+Then you can run autocomplete queries easily like this:
+
+```php
+$obj_response = $obj_index->search((new \Search\Query('name_ngram:' . $str_query)));
+```
+
+You can see a full demo application using this in my "pub search" demo app
 
 # Creating Documents #
 
