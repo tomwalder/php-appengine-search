@@ -16,11 +16,12 @@ Generally this means developers cannot access the service without using [Python/
 - [Examples](#examples)
 - [Install with Composer](#install-with-composer)
 - [Queries](#queries)
-- [Distance Geo Queries](#distance-from)
+- [Geo Queries](#distance-from)
 - [Autocomplete](#autocomplete)
 - [Creating Documents](#creating-documents) - includes location (Geopoint) and Dates
 - [Deleting Documents](#deleting-documents)
 - [Local Development](#local-development-environment)
+- [Best Practice, Free Quotas, Costs](#best-practice-free-quotas-costs)
 - [Google Software](#google-software)
 
 ## Examples ##
@@ -296,6 +297,18 @@ $obj_index->delete([$obj_doc3, 'another-document-id']);
 # Local Development Environment #
 
 The Search API is supported locally, because it's included to support the Python, Java and Go App Engine runtimes.
+
+# Best Practice, Free Quotas, Costs #
+
+Like most App Engine services, search is free... up to a point!
+
+- [Free quota information](https://cloud.google.com/appengine/docs/quotas?hl=en#search)
+- [Search API pricing](https://cloud.google.com/appengine/pricing#search_pricing)
+
+And some best practice that is most certainly worth a read
+
+- [Best practice for the Google App Engine Search API](https://cloud.google.com/appengine/docs/python/search/best_practices)
+
 
 # Google Software #
 
