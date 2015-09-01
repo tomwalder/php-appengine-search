@@ -20,7 +20,7 @@
  *
  * @author Tom Walder <tom@docnet.nu>
  */
-class GatewayTest extends \PHPUnit_Framework_TestCase
+class GatewayTest extends \google\appengine\testing\ApiProxyTestBase
 {
 
     /**
@@ -30,6 +30,29 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
     {
         $obj_gateway = new \Search\Gateway('some-index');
         $this->assertInstanceOf('\\Search\\Gateway', $obj_gateway);
+    }
+
+    /**
+     * Basic search test
+     */
+    public function testBasicSearch()
+    {
+        $str_index = 'test-index';
+        $str_query = 'phrase';
+
+        $obj_request = new \google\appengine\SearchRequest();
+        $obj_request->mutableParams()
+            ->setQuery($str_query)
+            ->setLimit(20)
+            ->setOffset(0)
+            ->mutableIndexSpec()->setName($str_index);
+
+        $this->apiProxyMock->expectCall('search', 'Search', $obj_request, new \google\appengine\SearchResponse());
+
+        $obj_gateway = new \Search\Gateway($str_index);
+        $obj_gateway->search(new \Search\Query($str_query));
+
+        $this->apiProxyMock->verify();
     }
 
 }
