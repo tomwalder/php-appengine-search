@@ -24,6 +24,7 @@ use google\appengine\ListDocumentsRequest;
 use google\appengine\ListDocumentsResponse;
 use google\appengine\runtime\ApiProxy;
 use google\appengine\runtime\ApplicationError;
+use google\appengine\ScorerSpec\Scorer;
 use google\appengine\SearchRequest;
 use google\appengine\SearchResponse;
 use google\appengine\SearchResult;
@@ -119,6 +120,13 @@ class Gateway
                 $obj_sort->setSortExpression($arr_sort[0]);
                 $obj_sort->setSortDescending(Query::DESC === $arr_sort[1]);
             }
+        }
+
+        // Match Scoring
+        if(Query::SCORE_REGULAR === $obj_query->getScorer()) {
+            $obj_params->mutableScorerSpec()->setScorer(Scorer::MATCH_SCORER)->setLimit($obj_query->getLimit());
+        } elseif (Query::SCORE_RESCORING === $obj_query->getScorer()) {
+            $obj_params->mutableScorerSpec()->setScorer(Scorer::RESCORING_MATCH_SCORER)->setLimit($obj_query->getLimit());
         }
 
         // Return Fields
@@ -222,7 +230,7 @@ class Gateway
             /** @var SearchResult $obj_result */
             $obj_doc = $obj_mapper->fromGoogle($obj_result->getDocument(), $obj_result->getExpressionList());
             $obj_response->results[] = (object)[
-                'score' => null, // $obj_result->getScore()
+                'score' => ($obj_result->getScoreSize() > 0 ? $obj_result->getScore(0) : 0),
                 'doc' => $obj_doc
             ];
         }

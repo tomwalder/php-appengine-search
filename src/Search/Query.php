@@ -24,8 +24,18 @@ namespace Search;
 class Query
 {
 
+    /**
+     * Sort directions
+     */
     const DESC = 'DESCENDING';
     const ASC = 'ASCENDING';
+
+    /**
+     * Match scorers
+     */
+    const SCORE_NONE = 'NONE';
+    const SCORE_REGULAR = 'REGULAR';
+    const SCORE_RESCORING = 'RESCORING';
 
     /**
      * Query string
@@ -68,6 +78,13 @@ class Query
      * @var array
      */
     private $arr_sorts = [];
+
+    /**
+     * Scorer type
+     *
+     * @var string
+     */
+    private $str_scorer = self::SCORE_NONE;
 
     /**
      * Set the query string on construction
@@ -172,6 +189,28 @@ class Query
     public function getSorts()
     {
         return $this->arr_sorts;
+    }
+
+    /**
+     * Should we use a MatchScorer?
+     *
+     * @param $str_type
+     * @return $this
+     */
+    public function score($str_type = self::SCORE_REGULAR)
+    {
+        $this->str_scorer = $str_type;
+        return $this;
+    }
+
+    /**
+     * Get the defined scorer
+     *
+     * @return string
+     */
+    public function getScorer()
+    {
+        return $this->str_scorer;
     }
 
     /**

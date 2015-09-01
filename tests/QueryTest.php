@@ -120,4 +120,15 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($obj_query, $obj_query2);
     }
 
+    /**
+     * Validate scorer get/set
+     */
+    public function testScorer()
+    {
+        $obj_query = new \Search\Query();
+        $this->assertEquals(\Search\Query::SCORE_NONE, $obj_query->getScorer());
+        $obj_query->score();
+        $this->assertEquals(\Search\Query::SCORE_REGULAR, $obj_query->getScorer());
+    }
+
 }

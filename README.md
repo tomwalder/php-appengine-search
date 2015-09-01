@@ -168,6 +168,36 @@ You can fetch a single document from an index directly, by it's unique Doc ID:
 $obj_index->get('some-document-id-here');
 ```
 
+## Scoring ##
+
+You can enable the MatchScorer by calling the `Query::score` method.
+
+If you do this, each document in the result set will be scored by the Search API "according to search term frequency" - Google.
+
+Without it, documents will all have a score of 0.
+
+```php
+$obj_query->score();
+```
+
+And the results...
+
+```php
+foreach($obj_response->results as $obj_result) {
+    echo $obj_result->score, '<br />'; // Score will be a float
+}
+```
+
+### Multiple Sorts and Scoring ###
+
+If you apply `score()` and `sort()` you may be wasting cycles and costing money. Only score documents when you intend to sort by score.
+
+If you need to mix sorting of score and another field, you can use the magic field name `_score` like this - here we sort by price then score, so records with the same price are sorted by their score.
+
+```php
+$obj_query->score()->sort('price')->sort('_score');
+```
+
 # Helper Queries & Tools #
 
 ## Distance From ##
