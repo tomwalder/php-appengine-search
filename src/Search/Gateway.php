@@ -147,6 +147,20 @@ class Gateway
             }
         }
 
+        // Facets
+        $arr_facets = $obj_query->getFacets();
+        if(null !== $arr_facets) {
+            if(count($arr_facets) > 0) {
+                // We want a specific set of facets in the response
+                foreach($arr_facets as $str_facet) {
+                    $obj_params->addIncludeFacet()->setName($str_facet);
+                }
+            } else {
+                // We want all facets back...
+                $obj_params->setAutoDiscoverFacetCount(100);
+            }
+        }
+
         $this->execute('Search', $obj_request, new SearchResponse());
         return $this->processSearchResponse();
     }
