@@ -248,6 +248,25 @@ class Gateway
                 'doc' => $obj_doc
             ];
         }
+
+        // Map facets from results
+        // @todo Restructure/review response object and moving this code to Mapper
+        if($obj_search_response->getFacetResultSize() > 0) {
+            $obj_response->facets = []; // create the empty facets placeholder in the response
+            /** @var \google\appengine\FacetResult $obj_facet */
+            foreach($obj_search_response->getFacetResultList() as $obj_facet) {
+                $arr_facet_values = [];
+                /** @var \google\appengine\FacetResultValue $obj_facet_value */
+                foreach($obj_facet->getValueList() as $obj_facet_value) {
+                    $arr_facet_values[] = [
+                        'agg' => $obj_facet_value->getName(),
+                        'count' => $obj_facet_value->getCount()
+                    ];
+                }
+                $obj_response->facets[$obj_facet->getName()] = $arr_facet_values;
+            }
+        }
+
         return $obj_response;
     }
 
