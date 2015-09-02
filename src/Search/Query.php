@@ -87,6 +87,13 @@ class Query
     private $str_scorer = self::SCORE_NONE;
 
     /**
+     * Which facets to include in the response
+     *
+     * @var null
+     */
+    private $arr_facets = null;
+
+    /**
      * Set the query string on construction
      *
      * @param $str_query
@@ -258,8 +265,29 @@ class Query
         return $this->arr_return_expressions;
     }
 
+    /**
+     * Attempt to return Facet data with the results
+     *
+     * @param array $arr_facets
+     * @return $this
+     */
+    public function facets(array $arr_facets = [])
+    {
+        $this->arr_facets = $arr_facets;
+        return $this;
+    }
+
+    /**
+     * Which facets to include in the response
+     *
+     * @return null
+     */
+    public function getFacets()
+    {
+        return $this->arr_facets;
+    }
+
     // @todo Snippets
     // @todo Cursors
-    // @todo Facets
 
 }
