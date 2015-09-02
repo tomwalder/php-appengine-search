@@ -126,6 +126,8 @@ class Mapper
     public function toGoogle(Document $obj_source, GoogleDocument $obj_target)
     {
         $obj_target->setId($obj_source->getId());
+
+        // Field data
         foreach($obj_source->getSchema()->getFields() as $str_name => $int_type) {
             $obj_value = $obj_target->addField()->setName($str_name)->mutableValue();
             if(Schema::FIELD_GEOPOINT === $int_type) {
@@ -155,6 +157,17 @@ class Mapper
                 }
             }
         }
+
+        // Facets
+        foreach($obj_source->getFacets() as $arr_facet) {
+            $obj_facet = $obj_target->addFacet()->setName($arr_facet['name']);
+            if(isset($arr_facet['atom'])) {
+                $obj_facet->mutableValue()->setType(\storage_onestore_v3\FacetValue\ContentType::ATOM)->setStringValue($arr_facet['atom']);
+            } elseif (isset($arr_facet['number'])) {
+                $obj_facet->mutableValue()->setType(\storage_onestore_v3\FacetValue\ContentType::NUMBER)->setStringValue($arr_facet['number']);
+            }
+        }
+
         return $obj_target;
     }
 
