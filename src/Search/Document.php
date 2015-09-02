@@ -53,6 +53,13 @@ class Document
     private $arr_expressions = [];
 
     /**
+     * Facets
+     *
+     * @var array
+     */
+    private $arr_facets = [];
+
+    /**
      * Optionally set the Schema on construction
      *
      * @param Schema $obj_schema
@@ -182,6 +189,42 @@ class Document
             return $this->arr_expressions[$str_name];
         }
         return null;
+    }
+
+    /**
+     * Add an ATOM facet to the Document
+     *
+     * @param $str_name
+     * @param $str_value
+     * @return $this
+     */
+    public function atomFacet($str_name, $str_value)
+    {
+        $this->arr_facets[] = ['name' => $str_name, 'atom' => $str_value];
+        return $this;
+    }
+
+    /**
+     * Add a NUMBER facet to the Document
+     *
+     * @param $str_name
+     * @param $flt_value
+     * @return $this
+     */
+    public function numberFacet($str_name, $flt_value)
+    {
+        $this->arr_facets[] = ['name' => $str_name, 'number' => $flt_value];
+        return $this;
+    }
+
+    /**
+     * Return the facets
+     *
+     * @return array
+     */
+    public function getFacets()
+    {
+        return $this->arr_facets;
     }
 
 }
