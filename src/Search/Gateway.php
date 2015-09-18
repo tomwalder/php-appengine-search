@@ -225,8 +225,6 @@ class Gateway
     /**
      * Process a search response
      *
-     * @todo populate score when using a scorer
-     *
      * @return object
      */
     private function processSearchResponse()
