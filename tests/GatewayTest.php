@@ -55,4 +55,28 @@ class GatewayTest extends \google\appengine\testing\ApiProxyTestBase
         $this->apiProxyMock->verify();
     }
 
+    /**
+     * Test the delete document function
+     */
+    public function testDelete()
+    {
+        $str_index = 'test-index';
+        $arr_ids = ['123456789', 'abc123'];
+
+        $obj_request = new \google\appengine\DeleteDocumentRequest();
+        $obj_params = $obj_request->mutableParams();
+        $obj_params->mutableIndexSpec()->setName($str_index);
+        foreach($arr_ids as $str_id) {
+            $obj_params->addDocId($str_id);
+        }
+
+        $this->apiProxyMock->expectCall('search', 'DeleteDocument', $obj_request, new \google\appengine\DeleteDocumentResponse());
+
+        $obj_gateway = new \Search\Gateway($str_index);
+        $obj_gateway->delete($arr_ids);
+
+        $this->apiProxyMock->verify();
+
+    }
+
 }
