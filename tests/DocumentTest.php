@@ -99,6 +99,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $obj_doc = new \Search\Document();
         $obj_doc->atomFacet('ref', '121gw');
         $obj_doc->numberFacet('gw', 1.21);
+        $obj_doc->numberFacet('gw', 2.42);
+        $obj_doc->atomFacet('gw', 'lots');
 
         $this->assertEquals([
             [
@@ -107,6 +109,12 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
             ],[
                 'name' => 'gw',
                 'number' => 1.21
+            ],[
+                'name' => 'gw',
+                'number' => 2.42
+            ],[
+                'name' => 'gw',
+                'atom' => 'lots'
             ]
         ], $obj_doc->getFacets());
     }
