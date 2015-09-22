@@ -91,4 +91,24 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['a' => 'b', 'c' => 'd'], $obj_doc->getExpressions());
     }
 
+    /**
+     * Test Facets
+     */
+    public function testFacets()
+    {
+        $obj_doc = new \Search\Document();
+        $obj_doc->atomFacet('ref', '121gw');
+        $obj_doc->numberFacet('gw', 1.21);
+
+        $this->assertEquals([
+            [
+                'name' => 'ref',
+                'atom' => '121gw'
+            ],[
+                'name' => 'gw',
+                'number' => 1.21
+            ]
+        ], $obj_doc->getFacets());
+    }
+
 }
