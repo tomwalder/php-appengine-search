@@ -19,6 +19,7 @@ Generally this means developers cannot access the service without using [Python/
 - [Geo Queries](#distance-from)
 - [Autocomplete](#autocomplete)
 - [Creating Documents](#creating-documents) - includes location (Geopoint) and Dates
+- [Facets](#facets)
 - [Deleting Documents](#deleting-documents)
 - [Local Development](#local-development-environment)
 - [Best Practice, Free Quotas, Costs](#best-practice-free-quotas-costs)
@@ -309,6 +310,29 @@ $obj_book = $obj_schema->createDocument([
     'isbn' => '1840224312',
     'price' => 11.99
 ]);
+```
+
+# Facets #
+
+The Search API supports 2 types of document facets for categorisation, ATOM and NUMBER.
+
+ATOM are probably the ones you are most familiar with, and result sets will include counts per unique facet, kind of like this:
+ 
+For shirt sizes
+* small (9)
+* medium (37)
+
+## Adding Facets to a Document ##
+
+```php
+$obj_doc->atomFacet('size', 'small');
+$obj_doc->atomFacet('colour', 'blue');
+```
+
+## Getting Facets in Results ##
+
+```php
+$obj_query->facets();
 ```
 
 # Deleting Documents #
