@@ -103,4 +103,45 @@ class GatewayTest extends \google\appengine\testing\ApiProxyTestBase
         $this->assertInstanceOf('\\google\\appengine\\ListDocumentsResponse', $obj_gateway->getLastResponse());
     }
 
+    /**
+     * Test a basic put call
+     *
+     * @todo Expand range of field types
+     */
+    public function testPut()
+    {
+
+        $str_index = 'library';
+
+        // Schema describing a book
+        $obj_schema = (new \Search\Schema())
+            ->addText('title')
+        ;
+
+        // Create and populate a document
+        $obj_book = $obj_schema->createDocument([
+            'title' => 'The Merchant of Venice',
+        ]);
+
+        // Prepare the proxy mock
+        $obj_request = new \google\appengine\IndexDocumentRequest();
+        $obj_params = $obj_request->mutableParams();
+        $obj_params->mutableIndexSpec()->setName($str_index);
+        $obj_doc = $obj_params->addDocument();
+        $obj_doc->addField()
+            ->setName('title')
+            ->mutableValue()
+            ->setType(storage_onestore_v3\FieldValue\ContentType::TEXT)
+            ->setStringValue('The Merchant of Venice');
+
+        $this->apiProxyMock->expectCall('search', 'IndexDocument', $obj_request, new \google\appengine\IndexDocumentResponse());
+
+        // Write it to the Index
+        $obj_index = new \Search\Index($str_index);
+        $obj_index->put($obj_book);
+
+        $this->apiProxyMock->verify();
+
+    }
+
 }
