@@ -79,7 +79,7 @@ class GatewayTest extends \google\appengine\testing\ApiProxyTestBase
     }
 
     /**
-     * Test get by ID
+     * Test get by ID. Also ensure we can access the last request and response objects.
      *
      * @todo Add assertions for response
      */
@@ -92,11 +92,15 @@ class GatewayTest extends \google\appengine\testing\ApiProxyTestBase
         $obj_params = $obj_request->mutableParams();
         $obj_params->mutableIndexSpec()->setName($str_index);
         $obj_params->setStartDocId($str_id)->setLimit(1);
+        $obj_response = new \google\appengine\ListDocumentsResponse();
 
-        $this->apiProxyMock->expectCall('search', 'ListDocuments', $obj_request, new \google\appengine\ListDocumentsResponse());
+        $this->apiProxyMock->expectCall('search', 'ListDocuments', $obj_request, $obj_response);
         $obj_gateway = new \Search\Gateway($str_index);
         $obj_gateway->getDocById($str_id);
         $this->apiProxyMock->verify();
+
+        $this->assertInstanceOf('\\google\\appengine\\ListDocumentsRequest', $obj_gateway->getLastRequest());
+        $this->assertInstanceOf('\\google\\appengine\\ListDocumentsResponse', $obj_gateway->getLastResponse());
     }
 
 }
