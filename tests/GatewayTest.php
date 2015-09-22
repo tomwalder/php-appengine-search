@@ -34,6 +34,8 @@ class GatewayTest extends \google\appengine\testing\ApiProxyTestBase
 
     /**
      * Basic search test
+     *
+     * @todo Add assertions for response
      */
     public function testBasicSearch()
     {
@@ -48,15 +50,15 @@ class GatewayTest extends \google\appengine\testing\ApiProxyTestBase
             ->mutableIndexSpec()->setName($str_index);
 
         $this->apiProxyMock->expectCall('search', 'Search', $obj_request, new \google\appengine\SearchResponse());
-
         $obj_gateway = new \Search\Gateway($str_index);
         $obj_gateway->search(new \Search\Query($str_query));
-
         $this->apiProxyMock->verify();
     }
 
     /**
      * Test the delete document function
+     *
+     * @todo Add assertions for response
      */
     public function testDelete()
     {
@@ -71,12 +73,9 @@ class GatewayTest extends \google\appengine\testing\ApiProxyTestBase
         }
 
         $this->apiProxyMock->expectCall('search', 'DeleteDocument', $obj_request, new \google\appengine\DeleteDocumentResponse());
-
         $obj_gateway = new \Search\Gateway($str_index);
         $obj_gateway->delete($arr_ids);
-
         $this->apiProxyMock->verify();
-
     }
 
     /**
