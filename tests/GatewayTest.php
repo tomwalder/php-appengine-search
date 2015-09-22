@@ -79,4 +79,25 @@ class GatewayTest extends \google\appengine\testing\ApiProxyTestBase
 
     }
 
+    /**
+     * Test get by ID
+     *
+     * @todo Add assertions for response
+     */
+    public function testGetById()
+    {
+        $str_index = 'test-index';
+        $str_id = 'abc123def456';
+
+        $obj_request = new \google\appengine\ListDocumentsRequest();
+        $obj_params = $obj_request->mutableParams();
+        $obj_params->mutableIndexSpec()->setName($str_index);
+        $obj_params->setStartDocId($str_id)->setLimit(1);
+
+        $this->apiProxyMock->expectCall('search', 'ListDocuments', $obj_request, new \google\appengine\ListDocumentsResponse());
+        $obj_gateway = new \Search\Gateway($str_index);
+        $obj_gateway->getDocById($str_id);
+        $this->apiProxyMock->verify();
+    }
+
 }
