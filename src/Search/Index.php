@@ -31,10 +31,11 @@ class Index
 
     /**
      * @param $str_index_name
+     * @param null $str_namespace
      */
-    public function __construct($str_index_name)
+    public function __construct($str_index_name, $str_namespace = null)
     {
-        $this->obj_gateway = new Gateway($str_index_name);
+        $this->obj_gateway = new Gateway($str_index_name, $str_namespace);
     }
 
     /**

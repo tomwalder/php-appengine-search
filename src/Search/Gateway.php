@@ -47,6 +47,13 @@ class Gateway
     protected $str_index_name = null;
 
     /**
+     * The index namespace
+     *
+     * @var string
+     */
+    protected $str_namespace = null;
+
+    /**
      * The last request
      *
      * @var ProtocolMessage
@@ -61,13 +68,34 @@ class Gateway
     protected $obj_last_response = null;
 
     /**
-     * Set the index name
+     * Set the index name and optionally a namespace
      *
      * @param string $str_index_name
+     * @param null|string $str_namespace
      */
-    public function __construct($str_index_name)
+    public function __construct($str_index_name, $str_namespace = null)
     {
         $this->str_index_name = $str_index_name;
+        echo $str_namespace;
+        $this->str_namespace = $str_namespace;
+    }
+
+    /**
+     * Prepare the request parameters
+     *
+     * Index specs: consistency, mode, name, namespace, source, version
+     *
+     * @param $obj_request
+     * @return object
+     */
+    private function prepareRequestParams($obj_request)
+    {
+        $obj_params = $obj_request->mutableParams();
+        $obj_spec = $obj_params->mutableIndexSpec()->setName($this->str_index_name);
+        if(null !== $this->str_namespace) {
+            $obj_spec->setNamespace($this->str_namespace);
+        }
+        return $obj_params;
     }
 
     /**
@@ -80,8 +108,8 @@ class Gateway
     public function put(array $arr_docs)
     {
         $obj_request = new IndexDocumentRequest();
-        $obj_params = $obj_request->mutableParams();
-        $obj_params->mutableIndexSpec()->setName($this->str_index_name);
+        $obj_params = $this->prepareRequestParams($obj_request);
+
         // Other index specs: consistency, mode, name, namespace, source, version
         $obj_mapper = new Mapper();
         foreach($arr_docs as $obj_doc) {
@@ -101,9 +129,7 @@ class Gateway
     public function search(Query $obj_query)
     {
         $obj_request = new SearchRequest();
-        $obj_params = $obj_request->mutableParams();
-        $obj_params->mutableIndexSpec()->setName($this->str_index_name);
-        // Other index specs: consistency, mode, name, namespace, source, version
+        $obj_params = $this->prepareRequestParams($obj_request);
 
         // Basics
         $obj_params
@@ -176,8 +202,7 @@ class Gateway
     public function getDocById($str_id)
     {
         $obj_request = new ListDocumentsRequest();
-        $obj_params = $obj_request->mutableParams();
-        $obj_params->mutableIndexSpec()->setName($this->str_index_name);
+        $obj_params = $this->prepareRequestParams($obj_request);
         $obj_params->setStartDocId($str_id)->setLimit(1);
         $this->execute('ListDocuments', $obj_request, new ListDocumentsResponse());
         return $this->processListResponse();
@@ -191,9 +216,7 @@ class Gateway
     public function delete(array $arr_ids)
     {
         $obj_request = new DeleteDocumentRequest();
-        $obj_params = $obj_request->mutableParams();
-        $obj_params->mutableIndexSpec()->setName($this->str_index_name);
-        // Other index specs: consistency, mode, name, namespace, source, version
+        $obj_params = $this->prepareRequestParams($obj_request);
         foreach($arr_ids as $str_id) {
             $obj_params->addDocId($str_id);
         }
