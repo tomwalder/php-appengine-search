@@ -312,6 +312,14 @@ $obj_book = $obj_schema->createDocument([
 ]);
 ```
 
+## Namespaces ##
+
+You can set a namespace when constructing an index. This will allow you to support multi-tenant applications.
+
+```php
+$obj_index = new \Search\Index('library', 'client1');
+```
+
 # Facets #
 
 The Search API supports 2 types of document facets for categorisation, ATOM and NUMBER.
