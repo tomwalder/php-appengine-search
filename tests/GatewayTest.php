@@ -56,6 +56,28 @@ class GatewayTest extends \google\appengine\testing\ApiProxyTestBase
     }
 
     /**
+     * Basic namespace
+     */
+    public function testNamespaceSearch()
+    {
+        $str_index = 'test-index';
+        $str_namespace = 'testns1';
+        $str_query = 'phrase';
+
+        $obj_request = new \google\appengine\SearchRequest();
+        $obj_request->mutableParams()
+            ->setQuery($str_query)
+            ->setLimit(20)
+            ->setOffset(0)
+            ->mutableIndexSpec()->setName($str_index)->setNamespace($str_namespace);
+
+        $this->apiProxyMock->expectCall('search', 'Search', $obj_request, new \google\appengine\SearchResponse());
+        $obj_gateway = new \Search\Gateway($str_index, $str_namespace);
+        $obj_gateway->search(new \Search\Query($str_query));
+        $this->apiProxyMock->verify();
+    }
+
+    /**
      * Test the delete document function
      *
      * @todo Add assertions for response

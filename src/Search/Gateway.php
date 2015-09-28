@@ -76,7 +76,6 @@ class Gateway
     public function __construct($str_index_name, $str_namespace = null)
     {
         $this->str_index_name = $str_index_name;
-        echo $str_namespace;
         $this->str_namespace = $str_namespace;
     }
 
