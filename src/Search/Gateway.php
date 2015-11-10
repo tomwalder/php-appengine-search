@@ -204,7 +204,17 @@ class Gateway
         $obj_params = $this->prepareRequestParams($obj_request);
         $obj_params->setStartDocId($str_id)->setLimit(1);
         $this->execute('ListDocuments', $obj_request, new ListDocumentsResponse());
-        return $this->processListResponse();
+        $obj_response = $this->processListResponse();
+
+        // Verify that the document is the one we want and if not, empty the response
+        // This works around the lack of a "get-by-id" method on the Google Protocol Buffer
+        if($obj_response->count > 0) {
+            if($str_id !== $obj_response->docs[0]->getId()) {
+                $obj_response->count = 0;
+                $obj_response->docs = [];
+            }
+        }
+        return $obj_response;
     }
 
     /**
