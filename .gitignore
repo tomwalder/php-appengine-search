@@ -1,3 +1,4 @@
 vendor/
 build/
 app.yaml
+composer.lock
