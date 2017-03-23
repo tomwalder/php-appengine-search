@@ -84,13 +84,13 @@ Code: https://github.com/tomwalder/pub-search
 
 To install using Composer, use this require line in your `composer.json` for bleeding-edge features, dev-master
 
-`"tomwalder/php-appengine-search": "dev-master"`
+`"tomwalder/php-appengine-search": "v0.0.4-alpha"`
 
 Or, if you're using the command line:
 
 `composer require tomwalder/php-appengine-search`
 
-You will need `minimum-stability: dev`
+You may need `minimum-stability: dev`
 
 # Queries #
 
